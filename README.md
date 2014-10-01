@@ -14,7 +14,7 @@ This enables code such as:
 
 ## Master Build Status
 
-<a href='https://travis-ci.org/ReactiveX/RxGroovy/builds'><img src='https://travis-ci.org/ReactiveX/RxGroovy.svg?branch=0.x'></a>
+<a href='https://travis-ci.org/ReactiveX/RxGroovy/builds'><img src='https://travis-ci.org/ReactiveX/RxGroovy.svg?branch=1.x'></a>
 
 ## Communication
 
