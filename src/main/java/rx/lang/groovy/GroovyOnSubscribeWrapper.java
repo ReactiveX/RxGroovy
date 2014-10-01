@@ -16,8 +16,8 @@
 package rx.lang.groovy;
 
 import groovy.lang.Closure;
-import rx.Observable.OnSubscribeFunc;
-import rx.Observer;
+import rx.Observable.OnSubscribe;
+import rx.Subscriber;
 import rx.Subscription;
 
 /**
@@ -25,17 +25,17 @@ import rx.Subscription;
  * 
  * @param <T>
  */
-public class GroovyOnSubscribeFuncWrapper<T> implements OnSubscribeFunc<T> {
+public class GroovyOnSubscribeWrapper<T> implements OnSubscribe<T> {
 
     private final Closure<Subscription> closure;
 
-    public GroovyOnSubscribeFuncWrapper(Closure<Subscription> closure) {
+    public GroovyOnSubscribeWrapper(Closure<Subscription> closure) {
         this.closure = closure;
     }
 
     @Override
-    public Subscription onSubscribe(Observer<? super T> observer) {
-        return closure.call(observer);
+    public void call(Subscriber<? super T> observer) {
+        closure.call(observer);
     }
 
 }

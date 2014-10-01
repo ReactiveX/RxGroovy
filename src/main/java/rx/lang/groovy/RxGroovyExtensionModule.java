@@ -28,7 +28,7 @@ import org.codehaus.groovy.reflection.ReflectionCache;
 import org.codehaus.groovy.runtime.m12n.ExtensionModule;
 
 import rx.Observable;
-import rx.Observable.OnSubscribeFunc;
+import rx.Observable.OnSubscribe;
 import rx.functions.Action;
 import rx.functions.Function;
 import rx.observables.BlockingObservable;
@@ -107,8 +107,8 @@ public class RxGroovyExtensionModule extends ExtensionModule {
                         if (o instanceof Closure) {
                             if (Action.class.isAssignableFrom(m.getParameterTypes()[i])) {
                                 newArgs[i] = new GroovyActionWrapper((Closure) o);
-                            } else if (OnSubscribeFunc.class.isAssignableFrom(m.getParameterTypes()[i])) {
-                                newArgs[i] = new GroovyOnSubscribeFuncWrapper((Closure) o);
+                            } else if (OnSubscribe.class.isAssignableFrom(m.getParameterTypes()[i])) {
+                                newArgs[i] = new GroovyOnSubscribeWrapper((Closure) o);
                             } else {
                                 newArgs[i] = new GroovyFunctionWrapper((Closure) o);
                             }

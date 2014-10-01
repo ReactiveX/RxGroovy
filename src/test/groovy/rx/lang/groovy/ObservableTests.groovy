@@ -27,8 +27,9 @@ import org.mockito.MockitoAnnotations
 import rx.Notification
 import rx.Observable
 import rx.Observer
+import rx.Subscriber
 import rx.Subscription
-import rx.Observable.OnSubscribeFunc
+import rx.Observable.OnSubscribe
 import rx.subscriptions.Subscriptions
 
 def class ObservableTests {
@@ -60,12 +61,12 @@ def class ObservableTests {
 
     @Test
     public void testLast() {
-        assertEquals("three", Observable.from("one", "two", "three").toBlockingObservable().last())
+        assertEquals("three", Observable.from("one", "two", "three").toBlocking().last())
     }
 
     @Test
     public void testLastWithPredicate() {
-        assertEquals("two", Observable.from("one", "two", "three").toBlockingObservable().last({ x -> x.length() == 3}))
+        assertEquals("two", Observable.from("one", "two", "three").toBlocking().last({ x -> x.length() == 3}))
     }
 
     @Test
@@ -130,14 +131,14 @@ def class ObservableTests {
     @Test
     public void testFromWithIterable() {
         def list = [1, 2, 3, 4, 5]
-        assertEquals(5, Observable.from(list).count().toBlockingObservable().single());
+        assertEquals(5, Observable.from(list).count().toBlocking().single());
     }
     
     @Test
     public void testFromWithObjects() {
         def list = [1, 2, 3, 4, 5]
         // this should now treat these as 2 objects so have a count of 2
-        assertEquals(2, Observable.from(list, 6).count().toBlockingObservable().single());
+        assertEquals(2, Observable.from(list, 6).count().toBlocking().single());
     }
     
     /**
@@ -147,8 +148,8 @@ def class ObservableTests {
     public void testStartWith() {
         def list = [10, 11, 12, 13, 14]
         def startList = [1, 2, 3, 4, 5]
-        assertEquals(6, Observable.from(list).startWith(0).count().toBlockingObservable().single());
-        assertEquals(10, Observable.from(list).startWith(startList).count().toBlockingObservable().single());
+        assertEquals(6, Observable.from(list).startWith(0).count().toBlocking().single());
+        assertEquals(10, Observable.from(list).startWith(startList).count().toBlocking().single());
     }
     
     @Test
@@ -217,7 +218,7 @@ def class ObservableTests {
 
     @Test
     public void testForEach() {
-        Observable.create(new AsyncObservable()).toBlockingObservable().forEach({ result -> a.received(result)});
+        Observable.create(new AsyncObservable()).toBlocking().forEach({ result -> a.received(result)});
         verify(a, times(1)).received(1);
         verify(a, times(1)).received(2);
         verify(a, times(1)).received(3);
@@ -226,7 +227,7 @@ def class ObservableTests {
     @Test
     public void testForEachWithError() {
         try {
-            Observable.create(new AsyncObservable()).toBlockingObservable().forEach({ result -> throw new RuntimeException('err')});
+            Observable.create(new AsyncObservable()).toBlocking().forEach({ result -> throw new RuntimeException('err')});
             fail("we expect an exception to be thrown");
         }catch(Exception e) {
             // do nothing as we expect this
@@ -235,24 +236,24 @@ def class ObservableTests {
 
     @Test
     public void testLastOrDefault() {
-        def val = Observable.from("one", "two").toBlockingObservable().lastOrDefault("default", { x -> x.length() == 3})
+        def val = Observable.from("one", "two").toBlocking().lastOrDefault("default", { x -> x.length() == 3})
         assertEquals("two", val)
     }
 
     @Test
     public void testLastOrDefault2() {
-        def val = Observable.from("one", "two").toBlockingObservable().lastOrDefault("default", { x -> x.length() > 3})
+        def val = Observable.from("one", "two").toBlocking().lastOrDefault("default", { x -> x.length() > 3})
         assertEquals("default", val)
     }
     
     public void testSingle1() {
-        def s = Observable.from("one").toBlockingObservable().single({ x -> x.length() == 3})
+        def s = Observable.from("one").toBlocking().single({ x -> x.length() == 3})
         assertEquals("one", s)
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSingle2() {
-        Observable.from("one", "two").toBlockingObservable().single({ x -> x.length() == 3})
+        Observable.from("one", "two").toBlocking().single({ x -> x.length() == 3})
     }
 
     @Test
@@ -277,7 +278,7 @@ def class ObservableTests {
         Observable o2 = Observable.from(4, 5, 6);
         Observable o3 = Observable.from(7, 8, 9);
         
-        List values = Observable.zip(o1, o2, o3, {a, b, c -> [a, b, c] }).toList().toBlockingObservable().single();
+        List values = Observable.zip(o1, o2, o3, {a, b, c -> [a, b, c] }).toList().toBlocking().single();
         assertEquals([1, 4, 7], values.get(0));
         assertEquals([2, 5, 8], values.get(1));
         assertEquals([3, 6, 9], values.get(2));
@@ -289,7 +290,7 @@ def class ObservableTests {
         Observable o2 = Observable.from(4, 5, 6);
         Observable o3 = Observable.from(7, 8, 9);
         
-        List values = Observable.zip([o1, o2, o3], {a, b, c -> [a, b, c] }).toList().toBlockingObservable().single();
+        List values = Observable.zip([o1, o2, o3], {a, b, c -> [a, b, c] }).toList().toBlocking().single();
         assertEquals([1, 4, 7], values.get(0));
         assertEquals([2, 5, 8], values.get(1));
         assertEquals([3, 6, 9], values.get(2));
@@ -308,7 +309,7 @@ def class ObservableTests {
                 s ->
                 return "Value: " + s + " Group: " + groupObservable.getKey(); 
             });
-          }).toBlockingObservable().forEach({
+          }).toBlocking().forEach({
             s ->
             println(s);
             count++;
@@ -323,7 +324,7 @@ def class ObservableTests {
         
         Observable.from("a", "bb", "ccc", "dddd")
         .toMap({String s -> s.length()})
-        .toBlockingObservable()
+        .toBlocking()
         .forEach({s -> actual.putAll(s); });
         
         Map expected = new HashMap();
@@ -341,7 +342,7 @@ def class ObservableTests {
         
         Observable.from("a", "bb", "ccc", "dddd")
         .toMap({String s -> s.length()}, {String s -> s + s})
-        .toBlockingObservable()
+        .toBlocking()
         .forEach({s -> actual.putAll(s); });
         
         Map expected = new HashMap();
@@ -365,7 +366,7 @@ def class ObservableTests {
         
         Observable.from("a", "bb", "ccc", "dddd")
         .toMap({String s -> s.length()}, {String s -> s + s}, { last3 })
-        .toBlockingObservable()
+        .toBlocking()
         .forEach({s -> actual.putAll(s); });
         
         Map expected = new HashMap();
@@ -381,7 +382,7 @@ def class ObservableTests {
         
         Observable.from("a", "b", "cc", "dd")
         .toMultimap({String s -> s.length()})
-        .toBlockingObservable()
+        .toBlocking()
         .forEach({s -> actual.putAll(s); });
         
         Map expected = new HashMap();
@@ -398,7 +399,7 @@ def class ObservableTests {
         
         Observable.from("a", "b", "cc", "dd")
         .toMultimap({String s -> s.length()}, {String s -> s + s})
-        .toBlockingObservable()
+        .toBlocking()
         .forEach({s -> actual.putAll(s); });
         
         Map expected = new HashMap();
@@ -421,7 +422,7 @@ def class ObservableTests {
         
         Observable.from("a", "b", "cc", "dd")
         .toMultimap({String s -> s.length()}, {String s -> s + s}, { last1 })
-        .toBlockingObservable()
+        .toBlocking()
         .forEach({s -> actual.putAll(s); });
         
         Map expected = new HashMap();
@@ -444,7 +445,7 @@ def class ObservableTests {
         Observable.from("a", "b", "cc", "dd", "eee", "eee")
         .toMultimap({String s -> s.length()}, {String s -> s + s}, { last1 }, 
             {i -> i == 2 ? new ArrayList() : new HashSet() })
-        .toBlockingObservable()
+        .toBlocking()
         .forEach({s -> actual.putAll(s); });
         
         Map expected = new HashMap();
@@ -455,9 +456,9 @@ def class ObservableTests {
         assertEquals(expected, actual);
     }
 
-    def class AsyncObservable implements OnSubscribeFunc {
+    def class AsyncObservable implements OnSubscribe {
 
-        public Subscription onSubscribe(final Observer<Integer> observer) {
+        public void call(final Subscriber<Integer> observer) {
             new Thread(new Runnable() {
                 public void run() {
                     try {
@@ -471,7 +472,6 @@ def class ObservableTests {
                     observer.onCompleted();
                 }
             }).start();
-            return Subscriptions.empty();
         }
     }
 
@@ -497,19 +497,16 @@ def class ObservableTests {
         public void received(Object o);
     }
 
-    def class TestOnSubscribe implements OnSubscribeFunc<String> {
+    def class TestOnSubscribe implements OnSubscribe<String> {
         private final int count;
 
         public TestOnSubscribe(int count) {
             this.count = count;
         }
 
-        public Subscription onSubscribe(Observer<String> observer) {
-
+        public void call(Subscriber<String> observer) {
             observer.onNext("hello_" + count);
             observer.onCompleted();
-
-            return Subscriptions.empty();
         }
     }
 }
