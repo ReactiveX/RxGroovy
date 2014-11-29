@@ -197,14 +197,6 @@ def class ObservableTests {
     }
 
     @Test
-    public void testTakeWhileWithIndexViaGroovy() {
-        Observable.from(1, 2, 3).takeWhileWithIndex({ x, i -> i < 2}).subscribe({ result -> a.received(result)});
-        verify(a, times(1)).received(1);
-        verify(a, times(1)).received(2);
-        verify(a, times(0)).received(3);
-    }
-
-    @Test
     public void testToSortedList() {
         new TestFactory().getNumbers().toSortedList().subscribe({ result -> a.received(result)});
         verify(a, times(1)).received(Arrays.asList(1, 2, 3, 4, 5));
