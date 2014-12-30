@@ -26,9 +26,7 @@ Since RxGroovy is part of the RxJava family the communication channels are simil
 
 ## Versioning
 
-RxGroovy 0.x is based on RxJava 0.x. RxGroovy 1.0 will be released when RxJava 1.0 is released.
-
-As of 1.0.0 semantic versioning will be used.
+RxGroovy 1.0.x is based on RxJava 1.0.x. As of 1.0.0 semantic versioning will be used.
 
 ## Full Documentation
 
@@ -39,7 +37,7 @@ RxJava:
 
 ## Binaries
 
-For version 0.x:
+For version 1.x:
 
 Binaries and dependency information for Maven, Ivy, Gradle and others can be found at [http://search.maven.org](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22rxjava-groovy%22).
 
@@ -47,7 +45,7 @@ Example for Maven:
 
 ```xml
 <dependency>
-    <groupId>com.netflix.rxjava</groupId>
+    <groupId>io.reactivex</groupId>
     <artifactId>rxjava-groovy</artifactId>
     <version>x.y.z</version>
 </dependency>
@@ -56,13 +54,13 @@ Example for Maven:
 and for Ivy:
 
 ```xml
-<dependency org="com.netflix.rxjava" name="rxjava-groovy" rev="x.y.z" />
+<dependency org="io.reactivex" name="rxjava-groovy" rev="x.y.z" />
 ```
 
 and for Gradle:
 
 ```groovy
-compile 'com.netflix.rxjava:rxjava-groovy:x.y.z'
+compile 'io.reactivex:rxjava-groovy:x.y.z'
 ```
 
 ## Build
@@ -72,7 +70,7 @@ To build:
 ```
 $ git clone git@github.com:ReactiveX/RxGroovy.git
 $ cd RxGroovy/
-$ ./RxGroovy build
+$ ./gradlew build
 ```
 
 Futher details on building can be found on the RxJava [Getting Started](https://github.com/ReactiveX/RxJava/wiki/Getting-Started) page of the wiki.
