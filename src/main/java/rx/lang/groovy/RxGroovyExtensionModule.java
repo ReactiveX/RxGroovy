@@ -18,13 +18,14 @@ package rx.lang.groovy;
 import groovy.lang.Closure;
 import groovy.lang.MetaMethod;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.groovy.reflection.CachedClass;
 import org.codehaus.groovy.reflection.ReflectionCache;
+import org.codehaus.groovy.runtime.callsite.CallSite;
+import org.codehaus.groovy.runtime.callsite.CallSiteArray;
 import org.codehaus.groovy.runtime.m12n.ExtensionModule;
 
 import rx.Observable;
@@ -55,21 +56,29 @@ public class RxGroovyExtensionModule extends ExtensionModule {
         List<MetaMethod> methods = new ArrayList<MetaMethod>();
 
         for (Class classToExtend : CLASS_TO_EXTEND) {
+            ArrayList<Method> funcMethods = new ArrayList<Method>();
+            ArrayList<String> names = new ArrayList<String>();
             for (final Method m : classToExtend.getMethods()) {
                 for (Class c : m.getParameterTypes()) {
                     if (Function.class.isAssignableFrom(c)) {
-                        methods.add(createMetaMethod(m));
+                        funcMethods.add(m);
+                        names.add(m.getName());
                         // break out of parameter-type loop
                         break;
                     }
                 }
+            }
+
+            CallSiteArray callSites = new CallSiteArray(classToExtend, names.toArray(new String[0]));
+            for (int index = 0; index < funcMethods.size(); index++) {
+                methods.add(createMetaMethod(funcMethods.get(index), callSites, index));
             }
         }
 
         return methods;
     }
 
-    private MetaMethod createMetaMethod(final Method m) {
+    private MetaMethod createMetaMethod(final Method m, final CallSiteArray callSites, final int callSiteIndex) {
         if (m.getDeclaringClass().equals(Observable.class) && m.getName().equals("create")) {
             return specialCasedOverrideForCreate(m);
         }
@@ -116,15 +125,12 @@ public class RxGroovyExtensionModule extends ExtensionModule {
                             newArgs[i] = o;
                         }
                     }
-                    return m.invoke(object, newArgs);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (IllegalArgumentException e) {
-                    throw new RuntimeException(e);
-                } catch (InvocationTargetException e) {
-                    if (e.getCause() instanceof RuntimeException) {
+
+                    return callSites.array[callSiteIndex].call(object, newArgs);
+                } catch (Throwable e) {
+                    if (e instanceof RuntimeException) {
                         // re-throw whatever was thrown to us
-                        throw (RuntimeException) e.getCause();
+                        throw (RuntimeException) e;
                     } else {
                         throw new RuntimeException(e);
                     }
