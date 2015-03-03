@@ -2,3 +2,15 @@ language: java
 
 jdk:
   - oraclejdk7
+  
+sudo: false
+# as per http://blog.travis-ci.com/2014-12-17-faster-builds-with-container-based-infrastructure/
+
+# script for build and release via Travis to Bintray
+script: gradle/buildViaTravis.sh
+
+# secure environment variables for release to Bintray
+env:
+  global:
+  - secure: OPpNQ1KvC3VXnCyvXdR/mIGrmXMVsr8OA5dmhBoXpVNgsLoJy/OWmtaz3dTI2KujZ+68gGG8jnZVo5GAIpTQgn/dN23ImuzMEwWLtEvAsz+bJQw/p8xlFz8cz+9wzbZExv+J7QZ2kCttJN5g2q7+UV1uQo4bbb2EUOR+mqannVI=
+  - secure: Wvyv3z2Kf0BBWB1urworB+SLpUErQ19GhVV04UEJK6uiXsSuSrtIf3Da8mLZjA11c+cUXh6XaZnppQSHvBQTJ1ujxCQ0gYXIQFEu4jIotV2IinMwpmJxdV9dPndk0I8nLWrpZvouOfipY9shxEYsQnIMFPdBGmAY3AyWBtMEj2Q=
