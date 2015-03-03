@@ -1,0 +1,3 @@
+moduleName=groovy-extensions-perf
+moduleVersion=1.0
+extensionClasses=rx.lang.groovy.ObservableExtension
