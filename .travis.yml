@@ -12,5 +12,5 @@ script: gradle/buildViaTravis.sh
 # secure environment variables for release to Bintray
 env:
   global:
-  - secure: OPpNQ1KvC3VXnCyvXdR/mIGrmXMVsr8OA5dmhBoXpVNgsLoJy/OWmtaz3dTI2KujZ+68gGG8jnZVo5GAIpTQgn/dN23ImuzMEwWLtEvAsz+bJQw/p8xlFz8cz+9wzbZExv+J7QZ2kCttJN5g2q7+UV1uQo4bbb2EUOR+mqannVI=
-  - secure: Wvyv3z2Kf0BBWB1urworB+SLpUErQ19GhVV04UEJK6uiXsSuSrtIf3Da8mLZjA11c+cUXh6XaZnppQSHvBQTJ1ujxCQ0gYXIQFEu4jIotV2IinMwpmJxdV9dPndk0I8nLWrpZvouOfipY9shxEYsQnIMFPdBGmAY3AyWBtMEj2Q=
+  - secure: O8KGxUmi4mb5his6ZVUs7BlyGeUN60srEZnLX/eY1Dbk5SVroyOlohKdQVnjVYP1v3GvOWbQEQ8Ieh7gGlL+DWGd3oO43660UPjd3ffH43jU9pKwhb614jJT38lmjOo0B6ljEUU3/6bmR9r45cJyZM8xP0pW36G3UrjXlE0zui4=
+  - secure: VNPxaBGMJu2sUp6WQo8HN7iTWL/JAydbEfIE/OXFbsZlx5jjxvV0LaKVoyNW3XZ7MIq1iqyOZqn9jASzV7X9TqtBpT967Wf2qRu2HhF5bAnpqK/5qzWEqY7Taejx+3o+FU9+K5XYnoL4wUQ5otPRsAvl/3XdLCGJSglaTTEHLJk=
