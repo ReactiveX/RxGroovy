@@ -46,7 +46,7 @@ Example for Maven:
 ```xml
 <dependency>
     <groupId>io.reactivex</groupId>
-    <artifactId>rxjava-groovy</artifactId>
+    <artifactId>rxgroovy</artifactId>
     <version>x.y.z</version>
 </dependency>
 ```
@@ -54,13 +54,13 @@ Example for Maven:
 and for Ivy:
 
 ```xml
-<dependency org="io.reactivex" name="rxjava-groovy" rev="x.y.z" />
+<dependency org="io.reactivex" name="rxgroovy" rev="x.y.z" />
 ```
 
 and for Gradle:
 
 ```groovy
-compile 'io.reactivex:rxjava-groovy:x.y.z'
+compile 'io.reactivex:rxgroovy:x.y.z'
 ```
 
 ## Build
