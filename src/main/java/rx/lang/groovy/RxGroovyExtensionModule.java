@@ -137,21 +137,39 @@ public class RxGroovyExtensionModule extends ExtensionModule {
                 }
             }
 
-            @SuppressWarnings("rawtypes")
             @Override
             public CachedClass[] getParameterTypes() {
-                Class[] pts = m.getParameterTypes();
-                CachedClass[] cc = new CachedClass[pts.length];
-                for (int i = 0; i < pts.length; i++) {
-                    if (Function.class.isAssignableFrom(pts[i])) {
+                if (parameterTypes == null) {
+                    getParametersTypes0();
+                }
+
+                return parameterTypes;
+            }
+
+            private synchronized void getParametersTypes0() {
+                if (parameterTypes != null)
+                    return;
+
+                Class [] npt = nativeParamTypes == null ? getPT() : nativeParamTypes;
+
+                CachedClass[] pt = new CachedClass [npt.length];
+                for (int i = 0; i != npt.length; ++i) {
+                    if (Function.class.isAssignableFrom(npt[i])) {
                         // function type to be replaced by closure
-                        cc[i] = ReflectionCache.getCachedClass(Closure.class);
+                        pt[i] = ReflectionCache.getCachedClass(Closure.class);
                     } else {
                         // non-function type
-                        cc[i] = ReflectionCache.getCachedClass(pts[i]);
+                        pt[i] = ReflectionCache.getCachedClass(npt[i]);
                     }
                 }
-                return cc;
+
+                nativeParamTypes = npt;
+                setParametersTypes(pt);
+            }
+
+            @Override
+            protected Class[] getPT() {
+                return m.getParameterTypes();
             }
         };
     }
@@ -188,21 +206,39 @@ public class RxGroovyExtensionModule extends ExtensionModule {
                 return Observable.create(new GroovyCreateWrapper((Closure) arguments[0]));
             }
 
-            @SuppressWarnings("rawtypes")
             @Override
             public CachedClass[] getParameterTypes() {
-                Class[] pts = m.getParameterTypes();
-                CachedClass[] cc = new CachedClass[pts.length];
-                for (int i = 0; i < pts.length; i++) {
-                    if (Function.class.isAssignableFrom(pts[i])) {
+                if (parameterTypes == null) {
+                    getParametersTypes0();
+                }
+
+                return parameterTypes;
+            }
+
+            private synchronized void getParametersTypes0() {
+                if (parameterTypes != null)
+                    return;
+
+                Class [] npt = nativeParamTypes == null ? getPT() : nativeParamTypes;
+
+                CachedClass[] pt = new CachedClass [npt.length];
+                for (int i = 0; i != npt.length; ++i) {
+                    if (Function.class.isAssignableFrom(npt[i])) {
                         // function type to be replaced by closure
-                        cc[i] = ReflectionCache.getCachedClass(Closure.class);
+                        pt[i] = ReflectionCache.getCachedClass(Closure.class);
                     } else {
                         // non-function type
-                        cc[i] = ReflectionCache.getCachedClass(pts[i]);
+                        pt[i] = ReflectionCache.getCachedClass(npt[i]);
                     }
                 }
-                return cc;
+
+                nativeParamTypes = npt;
+                setParametersTypes(pt);
+            }
+
+            @Override
+            protected Class[] getPT() {
+                return m.getParameterTypes();
             }
         };
     }
