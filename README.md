@@ -39,7 +39,7 @@ RxJava:
 
 For version 1.x:
 
-Binaries and dependency information for Maven, Ivy, Gradle and others can be found at [http://search.maven.org](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22rxjava-groovy%22).
+Binaries and dependency information for Maven, Ivy, Gradle and others can be found at [https://search.maven.org](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22io.reactivex%22%20AND%20a%3A%22rxgroovy%22).
 
 Example for Maven:
 
