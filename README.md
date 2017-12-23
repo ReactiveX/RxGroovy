@@ -9,7 +9,7 @@ This enables code such as:
 ```groovy
   Observable.just("one", "two", "three")
     .take(2) 
-    .subscribe({arg -> println(arg)})
+    .subscribe { arg -> println arg }
 ```
 
 ## Master Build Status
